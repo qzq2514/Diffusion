@@ -47,7 +47,7 @@ CUDA_VISIBLE_DEVICES=0 python train_solver.py --data_name "Flower102"
 
 - 单通道较简单的数据集(如Mnist, Fashion_Mnist等)可以直接使用Linear的Beta采样，与Cosine采样无大区别
 - 3通道相对复杂的数据集(如Cifar10, Flower102, StyleGAN_Face等)的Beta采样最好使用[Improved DDPM](http://proceedings.mlr.press/v139/nichol21a/nichol21a.pdf)中提出的Cosine schedule,不然会导致最终生成的图片偏白。
-- L1损失和L2损失对比，L1损失下生成效果会更加"尖锐"有时候会稍显乱+脏，而L2损失则显得更加平滑。
+- L1损失和L2损失对比，L2损失下生成效果会更加"尖锐"有时候会稍显乱+脏，而L1损失则显得更加平滑。
 
 上述提到的L1/L2损失、Linear Schedule/Cosine Schedule的效果对比如下
 
