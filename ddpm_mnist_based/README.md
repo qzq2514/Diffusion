@@ -32,11 +32,11 @@ CUDA_VISIBLE_DEVICES=0 python train_solver.py --data_name "Flower102"
 
 | Minst                                                        | Fashion_Mnist                                                |
 | ------------------------------------------------------------ | ------------------------------------------------------------ |
-| <img src="/Users/georgeqi/Code/Diffusion/ddpm_mnist_based/images/20221226174548_mnist_latest_interpolate.jpg" alt="20221226174548_mnist_latest_interpolate" style="zoom:150%;" /> | <img src="/Users/georgeqi/Code/Diffusion/ddpm_mnist_based/images/20221226175012_fashion_mnist_latest_interpolate.jpg" alt="20221226175012_fashion_mnist_latest_interpolate" style="zoom:155%;" /> |
+| <img src="https://github.com/qzq2514/Diffusion/blob/main/ddpm_mnist_based/images/20221226174548_mnist_latest_interpolate.jpg" alt="20221226174548_mnist_latest_interpolate" style="zoom:150%;" /> | <img src="https://github.com/qzq2514/Diffusion/blob/main/ddpm_mnist_based/images/20221226175012_fashion_mnist_latest_interpolate.jpg" alt="20221226175012_fashion_mnist_latest_interpolate" style="zoom:155%;" /> |
 | **Cifar10**                                                  | **Flower102**                                                |
-| <img src="/Users/georgeqi/Code/Diffusion/ddpm_mnist_based/images/20221226174822_cifar10_latest_interpolate.jpg" alt="20221226174822_cifar10_latest_interpolate" style="zoom: 150%;" /> | <img src="/Users/georgeqi/Code/Diffusion/ddpm_mnist_based/images/20221226173958_flower102_size64_858_interpolate.jpg" alt="20221226173958_flower102_size64_858_interpolate" style="zoom:120%;" /> |
+| <img src="https://github.com/qzq2514/Diffusion/blob/main/ddpm_mnist_based/images/20221226174822_cifar10_latest_interpolate.jpg" alt="20221226174822_cifar10_latest_interpolate" style="zoom: 150%;" /> | <img src="https://github.com/qzq2514/Diffusion/blob/main/ddpm_mnist_based/images/20221226173958_flower102_size64_858_interpolate.jpg" alt="20221226173958_flower102_size64_858_interpolate" style="zoom:120%;" /> |
 | **StyleGAN_Face#1**                                          | **StyleGAN_Face#2**                                          |
-| ![20221226174754_StyleGAN_face_size128_225_interpolate](/Users/georgeqi/Code/Diffusion/ddpm_mnist_based/images/20221226174754_StyleGAN_face_size128_225_interpolate.jpg) | ![20221226181429_StyleGAN_face_size128_225_interpolate](/Users/georgeqi/Code/Diffusion/ddpm_mnist_based/images/20221226181429_StyleGAN_face_size128_225_interpolate.jpg) |
+| <img src="https://github.com/qzq2514/Diffusion/blob/main/ddpm_mnist_based/images/20221226174754_StyleGAN_face_size128_225_interpolate.jpg" alt="20221226174754_StyleGAN_face_size128_225_interpolate" style="zoom:101%;" /> | <img src="https://github.com/qzq2514/Diffusion/blob/main/ddpm_mnist_based/images/20221226181429_StyleGAN_face_size128_225_interpolate.jpg" alt="20221226181429_StyleGAN_face_size128_225_interpolate" style="zoom:101%;" /> |
 
 感觉插值的结果并非是平缓的，而是中间会有一个比较“陡峭”的突变过程.....暂时没找到这种突变的解释~
 
@@ -53,8 +53,8 @@ CUDA_VISIBLE_DEVICES=0 python train_solver.py --data_name "Flower102"
 
 | 配置      | L1 loss、Cosine Beta                                         | L2 loss、Cosine Beta                                         | L1 loss、Linear Beta                                         |
 | --------- | ------------------------------------------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------ |
-| Cifar10   | ![cifar10_epoch27](/Users/georgeqi/Code/Diffusion/ddpm_mnist_based/images/cifar10_epoch27.jpg) | ![cifar10_L2loss_epoch27](/Users/georgeqi/Code/Diffusion/ddpm_mnist_based/images/cifar10_L2loss_epoch27.jpg) | ![cifar10_linearBeta_epoch27_](/Users/georgeqi/Code/Diffusion/ddpm_mnist_based/images/cifar10_linearBeta_epoch27_.jpg) |
-| Flower102 | ![Flower102_epoch_520](/Users/georgeqi/Code/Diffusion/ddpm_mnist_based/images/Flower102_epoch_520.jpg) | ![Flower102_L2loss_epoch_520](/Users/georgeqi/Code/Diffusion/ddpm_mnist_based/images/Flower102_L2loss_epoch_520.jpg) | ![FLower102_linearBeta_epoch_520](/Users/georgeqi/Code/Diffusion/ddpm_mnist_based/images/FLower102_linearBeta_epoch_520.jpg) |
+| Cifar10   | <img src="https://github.com/qzq2514/Diffusion/blob/main/ddpm_mnist_based/images/cifar10_epoch27.jpg" alt="cifar10_epoch27" style="zoom:101%;" /> | <img src="https://github.com/qzq2514/Diffusion/blob/main/ddpm_mnist_based/images/cifar10_L2loss_epoch27.jpg" alt="cifar10_L2loss_epoch27" style="zoom:1101%;" /> | <img src="https://github.com/qzq2514/Diffusion/blob/main/ddpm_mnist_based/images/cifar10_linearBeta_epoch27_.jpg" alt="cifar10_linearBeta_epoch27_" style="zoom:101%;" /> |
+| Flower102 | <img src="https://github.com/qzq2514/Diffusion/blob/main/ddpm_mnist_based/images/Flower102_epoch_520.jpg" alt="Flower102_epoch_520" style="zoom:101%;" /> | <img src="https://github.com/qzq2514/Diffusion/blob/main/ddpm_mnist_based/images/Flower102_L2loss_epoch_520.jpg" alt="Flower102_L2loss_epoch_520" style="zoom:101%;" /> | <img src="https://github.com/qzq2514/Diffusion/blob/main/ddpm_mnist_based/images/FLower102_linearBeta_epoch_520.jpg" alt="FLower102_linearBeta_epoch_520" style="zoom:101%;" /> |
 
   
 
@@ -64,9 +64,9 @@ CUDA_VISIBLE_DEVICES=0 python train_solver.py --data_name "Flower102"
 
 | 配置            | EMA✅                      P2 loss✅              Clip denoised✅ | EMA❌                       P2 loss✅             Clip denoised✅ |
 | --------------- | ------------------------------------------------------------ | ------------------------------------------------------------ |
-| 效果(26K steps) | ![StyleGANFace_128-sample-130](/Users/georgeqi/Code/Diffusion/ddpm_mnist_based/images/StyleGANFace_128-sample-130.png) | ![StyleGANFace_128_noEMA-sample-130](/Users/georgeqi/Code/Diffusion/ddpm_mnist_based/images/StyleGANFace_128_noEMA-sample-130.png) |
+| 效果(26K steps) | <img src="https://github.com/qzq2514/Diffusion/blob/main/ddpm_mnist_based/images/StyleGANFace_128-sample-130.png" alt="StyleGANFace_128-sample-130" style="zoom:101%;" /> | <img src="https://github.com/qzq2514/Diffusion/blob/main/ddpm_mnist_based/images/StyleGANFace_128_noEMA-sample-130.png" alt="StyleGANFace_128_noEMA-sample-130" style="zoom:101%;" /> |
 | **配置**        | **EMA✅                        P2 loss❌            Clip denoised✅** | **EMA✅                      P2 loss✅              Clip denoised❌** |
-| 效果(26K steps) | ![StyleGANFace_128_noP2weight-sample-130](/Users/georgeqi/Code/Diffusion/ddpm_mnist_based/images/StyleGANFace_128_noP2weight-sample-130.png) | ![StyleGANFace_128_noClipDenoised-sample-130](/Users/georgeqi/Code/Diffusion/ddpm_mnist_based/images/StyleGANFace_128_noClipDenoised-sample-130.png) |
+| 效果(26K steps) | <img src="https://github.com/qzq2514/Diffusion/blob/main/ddpm_mnist_based/images/StyleGANFace_128_noP2weight-sample-130.png" alt="StyleGANFace_128_noP2weight-sample-130" style="zoom:101%;" /> | <img src="https://github.com/qzq2514/Diffusion/blob/main/ddpm_mnist_based/images/StyleGANFace_128_noClipDenoised-sample-130.png" alt="StyleGANFace_128_noClipDenoised-sample-130" style="zoom:101%;" /> |
 
 上面看来无明显的大差别，所以在本仓库中未使用EMA和P2 Loss，但是用了Clip denoised。
 
