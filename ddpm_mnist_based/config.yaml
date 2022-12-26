@@ -1,0 +1,59 @@
+Train_Setting:
+    learning_rate: 0.0001  # 0.0001 0.0002
+    timestep_num: 1000
+    Adam_beta1: 0.9
+    Adam_beta2: 0.99 # 0.99 0.999
+    diffusion_beta_shedule: "cosine" # cosine linear
+    diffusion_loss_type: "l1" # l1 l2
+
+Train_Data:
+    Flower102:
+        image_size: 64
+        image_channel: 3
+        batch_size: 128
+        sample_num: 64
+        train_cpoch: 2000
+        data_path: "../dataset/Flower102"
+        save_dir: "./train_results/Flower102_64"
+        pth_save_name: "flower102_size64.pt"
+
+    StyleGAN_Face:
+        image_size: 512
+        image_channel: 3
+        batch_size: 2
+        sample_num: 1
+        train_cpoch: 2000
+        data_path: "../dataset/StyleGAN_face"
+        save_dir: "./train_results/StyleGAN_face512"
+        pth_save_name: "StyleGAN_face_size512.pt"
+
+    Mnist:
+        image_size: 32
+        image_channel: 1
+        batch_size: 256
+        sample_num: 100
+        train_cpoch: 200
+        data_path: "../dataset/mnist.pkl.gz"
+        save_dir: "./train_results/mnist"
+        pth_save_name: "mnist_latest.pt"
+
+    Fashion_Mnist:
+        image_size: 32
+        image_channel: 1
+        batch_size: 256
+        sample_num: 100
+        train_cpoch: 200
+        data_path: "../dataset/FashionMNIST/processed"
+        save_dir: "./train_results/fashion_mnist"
+        pth_save_name: "fashion_mnist_latest.pt"
+
+    Cifar10:
+        image_size: 32
+        image_channel: 3
+        batch_size: 256
+        sample_num: 100
+        train_cpoch: 500
+        data_path: "../dataset/cifar-10-batches-py"
+        save_dir: "./train_results/cifar10_temp"
+        pth_save_name: "cifar10_latest.pt"
+
