@@ -10,35 +10,24 @@ CUDA_VISIBLE_DEVICES=0 python train_solver.py --data_name "Flower102"
 
 在config.yaml中各个数据集使用默认的Training Setting，每个数据集特有的配置见config.yaml下的Train_Data.
 
-## 随机生成和去噪可视化
+## 生成效果
 
 生成效果如下:
 
-| 数据集                                                       | 去噪过程可视化                                               | 最终去噪效果                                                 |
-| ------------------------------------------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------ |
-| Mnist                                                        | <img src="https://github.com/qzq2514/Diffusion/blob/main/ddpm_mnist_based/images/20221225095139_mnist_latest_progress.jpg" alt="20221225095139_mnist_latest_progress" style="zoom:200%;" /> | <img src="https://github.com/qzq2514/Diffusion/blob/main/ddpm_mnist_based/images/20221225095139_mnist_latest_final.jpg" alt="20221225095139_mnist_latest_final" style="zoom:200%;" /> |
-| Fashion_Mnist                                                | <img src="https://github.com/qzq2514/Diffusion/blob/main/ddpm_mnist_based/images/20221225200037_fashion_mnist_latest_progress.jpg" alt="20221225200037_fashion_mnist_latest_progress" style="zoom:150%;" /> | <img src="https://github.com/qzq2514/Diffusion/blob/main/ddpm_mnist_based/images/20221225200037_fashion_mnist_latest_final.jpg" alt="20221225200037_fashion_mnist_latest_final" style="zoom:150%;" /> |
-| Cifar10                                                      | <img src="https://github.com/qzq2514/Diffusion/blob/main/ddpm_mnist_based/images/20221225200604_cifar10_latest_progress.jpg" alt="20221225200604_cifar10_latest_progress" style="zoom:200%;" /> | <img src="https://github.com/qzq2514/Diffusion/blob/main/ddpm_mnist_based/images/20221225200604_cifar10_latest_final.jpg" alt="20221225200604_cifar10_latest_final" style="zoom:200%;" /> |
-| [Flower102](https://www.robots.ox.ac.uk/~vgg/data/flowers/102/) | <img src="https://github.com/qzq2514/Diffusion/blob/main/ddpm_mnist_based/images/20221226111542_flower102_size64_progress.jpg" alt="20221226111542_flower102_size64_progress" style="zoom:100%;" /> | <img src="https://github.com/qzq2514/Diffusion/blob/main/ddpm_mnist_based/images/20221226111542_flower102_size64_final.jpg" alt="20221226111542_flower102_size64_final" style="zoom:100%;" /> |
-| StyleGAN2人脸                                                | <img src="https://github.com/qzq2514/Diffusion/blob/main/ddpm_mnist_based/images/20221226130201_StyleGAN_face_size128_progress.jpg" alt="20221226130201_StyleGAN_face_size128_progress" style="zoom:100%;" /> | <img src="https://github.com/qzq2514/Diffusion/blob/main/ddpm_mnist_based/images/20221226130201_StyleGAN_face_size128_final.jpg" alt="20221226130201_StyleGAN_face_size128_final" style="zoom:100%;" /> |
+| 数据集                                                       | 去噪过程可视化                                               | 最终去噪效果    | 插值                                              |
+| ------------------------------------------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------ |------------------------------------------------------------ |
+| Mnist                                                        | <img src="https://github.com/qzq2514/Diffusion/blob/main/ddpm_mnist_based/images/20221225095139_mnist_latest_progress.jpg" alt="20221225095139_mnist_latest_progress" style="zoom:2000%;" /> | <img src="https://github.com/qzq2514/Diffusion/blob/main/ddpm_mnist_based/images/20221225095139_mnist_latest_final.jpg" alt="20221225095139_mnist_latest_final" style="zoom:2000%;" /> |<img src="https://github.com/qzq2514/Diffusion/blob/main/ddpm_mnist_based/images/20221226174548_mnist_latest_interpolate.jpg" alt="20221226174548_mnist_latest_interpolate" style="zoom:150%;" />  |
+| Fashion_Mnist                                                | <img src="https://github.com/qzq2514/Diffusion/blob/main/ddpm_mnist_based/images/20221225200037_fashion_mnist_latest_progress.jpg" alt="20221225200037_fashion_mnist_latest_progress" style="zoom:1500%;" /> | <img src="https://github.com/qzq2514/Diffusion/blob/main/ddpm_mnist_based/images/20221225200037_fashion_mnist_latest_final.jpg" alt="20221225200037_fashion_mnist_latest_final" style="zoom:1500%;" /> | <img src="https://github.com/qzq2514/Diffusion/blob/main/ddpm_mnist_based/images/20221226175012_fashion_mnist_latest_interpolate.jpg" alt="20221226175012_fashion_mnist_latest_interpolate" style="zoom:155%;" />|
+| Cifar10                                                      | <img src="https://github.com/qzq2514/Diffusion/blob/main/ddpm_mnist_based/images/20221225200604_cifar10_latest_progress.jpg" alt="20221225200604_cifar10_latest_progress" style="zoom:200%;" /> | <img src="https://github.com/qzq2514/Diffusion/blob/main/ddpm_mnist_based/images/20221225200604_cifar10_latest_final.jpg" alt="20221225200604_cifar10_latest_final" style="zoom:200%;" /> |<img src="https://github.com/qzq2514/Diffusion/blob/main/ddpm_mnist_based/images/20221226174822_cifar10_latest_interpolate.jpg" alt="20221226174822_cifar10_latest_interpolate" style="zoom:1500%;" /> |
+| [Flower102](https://www.robots.ox.ac.uk/~vgg/data/flowers/102/) | <img src="https://github.com/qzq2514/Diffusion/blob/main/ddpm_mnist_based/images/20221226111542_flower102_size64_progress.jpg" alt="20221226111542_flower102_size64_progress" style="zoom:100%;" /> | <img src="https://github.com/qzq2514/Diffusion/blob/main/ddpm_mnist_based/images/20221226111542_flower102_size64_final.jpg" alt="20221226111542_flower102_size64_final" style="zoom:100%;" /> | <img src="https://github.com/qzq2514/Diffusion/blob/main/ddpm_mnist_based/images/20221226173958_flower102_size64_858_interpolate.jpg" alt="20221226173958_flower102_size64_858_interpolate" style="zoom:120%;" />|
+| StyleGAN2人脸                                                | <img src="https://github.com/qzq2514/Diffusion/blob/main/ddpm_mnist_based/images/20221226130201_StyleGAN_face_size128_progress.jpg" alt="20221226130201_StyleGAN_face_size128_progress" style="zoom:100%;" /> | <img src="https://github.com/qzq2514/Diffusion/blob/main/ddpm_mnist_based/images/20221226130201_StyleGAN_face_size128_final.jpg" alt="20221226130201_StyleGAN_face_size128_final" style="zoom:100%;" /> | <img src="https://github.com/qzq2514/Diffusion/blob/main/ddpm_mnist_based/images/20221226174754_StyleGAN_face_size128_225_interpolate.jpg" alt="20221226174754_StyleGAN_face_size128_225_interpolate" style="zoom:101%;" />|
 
 上述训练数据集和已经训练好的模型放在[这里](https://drive.google.com/drive/folders/1yInbcK5pq9qMhkl9ES3QIZr69LXkeeQK).
 
-## Interpolate
-
-使用[原DDPM](https://arxiv.org/pdf/2006.11239.pdf) 论文中提出的插值的方法进行测试，默认配置使用 `扩散步数=500，插值系数从0~1均匀采样10次`
-
+- 去噪过程可视化中，如果在采样step内均匀采样时间戳，会发现前面的去噪过程过于缓慢而后面会突然“有效果”，所以这里对于时间戳采用了一个“先粗后细”的采样trick用于可视化。
+- 上述插值方法由[原DDPM](https://arxiv.org/pdf/2006.11239.pdf) 论文中提出，本仓库采用其默认配置: `扩散步数=500，插值系数从0~1均匀采样10次`
 其中第一行和最后一行分别为两个原始的插值图片，中间11行为插值的结果，并且第二行和倒数第二行插值系数分别为0和1，可以看成是对原始两个插值图片的重构。
-
-| Minst                                                        | Fashion_Mnist                                                |
-| ------------------------------------------------------------ | ------------------------------------------------------------ |
-| <img src="https://github.com/qzq2514/Diffusion/blob/main/ddpm_mnist_based/images/20221226174548_mnist_latest_interpolate.jpg" alt="20221226174548_mnist_latest_interpolate" style="zoom:150%;" /> | <img src="https://github.com/qzq2514/Diffusion/blob/main/ddpm_mnist_based/images/20221226175012_fashion_mnist_latest_interpolate.jpg" alt="20221226175012_fashion_mnist_latest_interpolate" style="zoom:155%;" /> |
-| **Cifar10**                                                  | **Flower102**                                                |
-| <img src="https://github.com/qzq2514/Diffusion/blob/main/ddpm_mnist_based/images/20221226174822_cifar10_latest_interpolate.jpg" alt="20221226174822_cifar10_latest_interpolate" style="zoom: 150%;" /> | <img src="https://github.com/qzq2514/Diffusion/blob/main/ddpm_mnist_based/images/20221226173958_flower102_size64_858_interpolate.jpg" alt="20221226173958_flower102_size64_858_interpolate" style="zoom:120%;" /> |
-| **StyleGAN_Face#1**                                          | **StyleGAN_Face#2**                                          |
-| <img src="https://github.com/qzq2514/Diffusion/blob/main/ddpm_mnist_based/images/20221226174754_StyleGAN_face_size128_225_interpolate.jpg" alt="20221226174754_StyleGAN_face_size128_225_interpolate" style="zoom:101%;" /> | <img src="https://github.com/qzq2514/Diffusion/blob/main/ddpm_mnist_based/images/20221226181429_StyleGAN_face_size128_225_interpolate.jpg" alt="20221226181429_StyleGAN_face_size128_225_interpolate" style="zoom:101%;" /> |
-
-感觉插值的结果并非是平缓的，而是中间会有一个比较“陡峭”的突变过程.....暂时没找到这种突变的解释~
+实验下来：感觉插值的结果并非是平缓的，而是中间会有一个比较“陡峭”的突变过程.....暂时没找到这种突变的解释~
 
 
 
