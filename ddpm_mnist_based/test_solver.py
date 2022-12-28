@@ -59,17 +59,16 @@ def test_random_generate():
     # 1.显示中间不断去噪的过程(sample函数返回的是从T-->0的采样time下标,并且一开始去噪的慢，后面去噪的快)
     # 因为去噪嫌慢后快，所以均匀采样可视化效果不好，指数型采样可视化效果更好
     # time_milestones = np.linspace(0, sample_timestep_num-1, num=int(np.sqrt(sample_num)))
-    time_milestones = np.power(np.linspace(0, 1, num=int(np.sqrt(sample_num))), 0.3)*sample_timestep_num
+    time_milestones = np.power(np.linspace(0, 1, num=int(np.sqrt(sample_num))*2), 0.3)*sample_timestep_num
     time_milestones[-1] -= 1
 
     sample_tensors_progress = []
     for time_step in time_milestones:
         cur_tensor = sample_tensors[int(time_step)][:int(np.sqrt(sample_num))]
         sample_tensors_progress.append(cur_tensor)
-    sample_tensors_progress = torch.cat(sample_tensors_progress, dim=0)
-    print("shape:", sample_tensors_progress.shape)
+    sample_tensors_progress = torch.transpose(torch.cat(sample_tensors_progress, dim=0), dim0=2, dim1=3)
     show_img_progress = utils.make_grid_npy(sample_tensors_progress, nrow=int(np.sqrt(sample_num)))
-    cv2.imwrite(image_save_path+"_progress.jpg", show_img_progress)
+    cv2.imwrite(image_save_path+"_progress.jpg", np.transpose(show_img_progress, axes=[1, 0, 2]))
 
     # 2.保存最终的结果
     show_img_final = utils.make_grid_npy(sample_tensors[-1], nrow=int(np.sqrt(sample_num)))

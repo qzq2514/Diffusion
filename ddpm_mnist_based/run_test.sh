@@ -1,6 +1,6 @@
 
 # random_gen
-CUDA_VISIBLE_DEVICES=6 python test_solver.py \
+CUDA_VISIBLE_DEVICES=7 python test_solver.py \
                               --model_path "./train_results/StyleGAN_face128/StyleGAN_face_size128_225.pt" \
                               --image_size 128 \
                               --image_channel 3 \
@@ -61,3 +61,5 @@ CUDA_VISIBLE_DEVICES=6 python test_solver.py \
 #                              --data_name "StyleGAN_Face" \
 #                              --data_path "../dataset/StyleGAN_face" \
 #                              --test_model "interpolate"
+
+#11.213.122.6 hyRP3XZQ,
