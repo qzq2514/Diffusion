@@ -155,7 +155,7 @@ class Diffusion:
             self.q_reverse_mean_variance(x_0_reco, x_t, time_sequence)
         return model_mean, reverse_variance, reverse_log_variance
 
-    #根据公式5从x_t预测x_{t-1},即单个的去噪step,其实就是DDPM的sampling过程
+    # DDPM原始单个的去噪生成step，根据公式5从x_t预测x_{t-1},其实就是DDPM的sampling过程
     @torch.no_grad()
     def p_sample(self, x_t, time_sequence, clip_denoised=True):
         model_mean, _, reverse_log_variance = self.p_mean_variance(x_t, time_sequence, clip_denoised)
@@ -168,25 +168,63 @@ class Diffusion:
         x_tm1 = model_mean + nonzero_mask * (0.5 * reverse_log_variance).exp() * noise
         return x_tm1
 
-    # 完整的逆向过程去燥:不断循环p_sample过程
     @torch.no_grad()
-    def p_sample_loop(self, shape, clip_denoised):
-        batch_size = shape[0]
+    # DDIM的核心公式:从x_0和x_t预测x_{t-1}
+    def p_sample_ddim(self, x_t, time, time_prev, eta, clip_denoised=True):
+        batch_size = x_t.shape[0]
+        time_sequence = torch.full((batch_size,), time, device=self.device, dtype=torch.long)
+        pred_noise = self.model(x_t, time_sequence)  # 根据x_t和当前时间戳预测用于去噪的噪声
+        x_0_reco = self.predict_start_from_noise(x_t, time_sequence, pred_noise)  # 根据公式3反推得到x_0
+        if clip_denoised:
+            x_0_reco = torch.clamp(x_0_reco, min=-1.0, max=1.0)
+        if time_prev < 0:  # 这里相当于去噪过程结束
+            return x_0_reco
+        overline_alphas_t = self.overline_alphas[time]
+        overline_alphas_t_prev = self.overline_alphas[time_prev]
+        sigma = eta * torch.sqrt((1 - overline_alphas_t / overline_alphas_t_prev) *
+                                 (1 - overline_alphas_t_prev) / (1 - overline_alphas_t))
+        pred_noise_coef = torch.sqrt(1 - overline_alphas_t_prev - sigma ** 2)
+        noise = torch.randn_like(x_t, device=self.device)
+        # DDIM的核心:从x_0和x_t预测x_{t-1}
+        x_tm1 = torch.sqrt(overline_alphas_t_prev) * x_0_reco + pred_noise_coef * pred_noise + sigma * noise
+        return x_tm1
 
-        # 从纯噪声x_T开始去噪生成图像
-        img = torch.rand(shape, device=self.device)
-        images = []  # 保存逆向过程中的生成的中间图像
-
-        for i in tqdm(reversed(range(0, self.timestep_num)), desc='Sampling loop time step....', total=self.timestep_num):
-            # 一共T轮不断从T-1到0进行去噪
-            time_sequence = torch.full((batch_size,), i, device=self.device, dtype=torch.long)
-            img = self.p_sample(img, time_sequence, clip_denoised=clip_denoised)
-            images.append(img.cpu())
-        return images
-
+    @torch.no_grad()
     # sample函数中是从T-->0的采样time下标,并且一开始去噪的慢，后面去噪的快
-    def sample(self, image_size, batch_size=8, channels=3, clip_denoised=True):
-        return self.p_sample_loop(shape=(batch_size, channels, image_size, image_size), clip_denoised=clip_denoised)
+    # ddim_sample: "DDIM_50_0p0"/"DDPM_500_0p0"
+    def sample(self, image_size, batch_size=8, channels=3, clip_denoised=True, sample_info="DDPM_{}_1p0"):
+        sample_info = sample_info.format(self.timestep_num)   # 默认使用DDPM采样，采样步数为训练时候的加噪步数
+        sample_shape = (batch_size, channels, image_size, image_size)
+        sample_mode, iternum, eta = sample_info.split("_")
+        sample_stepnum, eta = int(iternum), float(eta.replace("p", "."))
+        assert sample_stepnum <= self.timestep_num, "Sampling number must less than timestep_num in training!"
+
+        times = torch.linspace(-1, self.timestep_num-1, steps=sample_stepnum+1)
+        times = list(reversed(times.int().tolist()))
+        images = []  # 保存逆向过程中的生成的中间图像用于后面可视化
+        # 初始化从纯的高斯随机噪声开始进行去噪生成,就相当于x_T,这里原来犯过一个很低级的错误，
+        # 就是不小心手误写成了torch.rand的0~1均匀采样，在DDIM且eta=0的时候效果差异非常大以至于无法生成图像，
+        # 而在DDPM或者DDIM且eta=1.0的时候基本没有影响
+        image = torch.randn(sample_shape, device=self.device)
+
+        for tau in tqdm(range(0, len(times)-1), desc='Sampling loop time step....', total=sample_stepnum):
+            # 在迭代的过程中，image就相当于x_t
+            time, time_prev = times[tau], times[tau+1]   # t和t_next分别对应于公式中的tau_i和tau_{i-1}表示采样过程中相邻的两个时间戳下标
+
+            if sample_mode.lower() == "ddim":
+                # 1.使用ddim的方式进行采样
+                image = self.p_sample_ddim(image, time, time_prev, eta, clip_denoised)
+            elif sample_mode.lower() == "ddpm":
+                # 2.使用DDPM进行采样生成仍然使用time作为下标进行一般的ddpm采样，如果sample_stepnum小于timestep_num，
+                # 就默认表示在DDPM下使用间隔指定长度步长进行采样，当sample_stepnum=timestep_num的时候，
+                # 就真的变成了原始无加速的DDPM算法，可以在这里减小sample_stepnum看一下间隔步长导致的DDPM降噪效果退化
+                time_sequence = torch.full((batch_size,), time, device=self.device, dtype=torch.long)
+                image = self.p_sample(image, time_sequence, clip_denoised)
+            else:
+                raise NotImplementedError("Sample_mode:{} is not Implemented".format(sample_mode))
+
+            images.append(image.cpu())
+        return images
 
     def train_loss(self, x_0, time_sequence):
         # 计算损失的过程非常简单:
