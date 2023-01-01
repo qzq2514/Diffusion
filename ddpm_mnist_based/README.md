@@ -10,7 +10,7 @@ CUDA_VISIBLE_DEVICES=0 python train_solver.py --data_name "Flower102"
 
 在config.yaml中各个数据集使用默认的Training Setting，每个数据集特有的配置见config.yaml下的Train_Data.
 
-## 生成效果
+# 生成效果
 
 生成效果如下:
 
@@ -31,23 +31,54 @@ CUDA_VISIBLE_DEVICES=0 python train_solver.py --data_name "Flower102"
 
 
 
+# 效果提升
 
-## 注意事项与其他对比实验
+这里简单实验和讨论了在训练DDPM过程中使用的损失函数(L1或L2损失)，并且实验了[Improved DDPM](http://proceedings.mlr.press/v139/nichol21a/nichol21a.pdf) 中提到的Cosine Beta Schedule带来的效果提升。
+
+## Cosine Beta Schedule
+
+待补充~
+
+## 效果提升实践
 
 - 单通道较简单的数据集(如Mnist, Fashion_Mnist等)可以直接使用Linear的Beta采样，与Cosine采样无大区别
 - 3通道相对复杂的数据集(如Cifar10, Flower102, StyleGAN_Face等)的Beta采样最好使用[Improved DDPM](http://proceedings.mlr.press/v139/nichol21a/nichol21a.pdf)中提出的Cosine schedule,不然会导致最终生成的图片偏白。
 - L1损失和L2损失对比，L2损失下生成效果会更加"尖锐"有时候会稍显乱+脏，而L1损失则显得更加平滑。
 
-上述提到的L1/L2损失、Linear Schedule/Cosine Schedule的效果对比如下
+上述提到的L1/L2损失、Linear Beta Schedule/Cosine Beta Schedule的效果对比如下:
 
-| 配置      | L1 loss、Cosine Beta                                         | L2 loss、Cosine Beta                                         | L1 loss、Linear Beta                                         |
-| --------- | ------------------------------------------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------ |
-| Cifar10   | <img src="https://github.com/qzq2514/Diffusion/blob/main/ddpm_mnist_based/images/cifar10_epoch27.jpg" alt="cifar10_epoch27" style="zoom:101%;" /> | <img src="https://github.com/qzq2514/Diffusion/blob/main/ddpm_mnist_based/images/cifar10_L2loss_epoch27.jpg" alt="cifar10_L2loss_epoch27" style="zoom:1101%;" /> | <img src="https://github.com/qzq2514/Diffusion/blob/main/ddpm_mnist_based/images/cifar10_linearBeta_epoch27_.jpg" alt="cifar10_linearBeta_epoch27_" style="zoom:101%;" /> |
-| Flower102 | <img src="https://github.com/qzq2514/Diffusion/blob/main/ddpm_mnist_based/images/Flower102_epoch_520.jpg" alt="Flower102_epoch_520" style="zoom:101%;" /> | <img src="https://github.com/qzq2514/Diffusion/blob/main/ddpm_mnist_based/images/Flower102_L2loss_epoch_520.jpg" alt="Flower102_L2loss_epoch_520" style="zoom:101%;" /> | <img src="https://github.com/qzq2514/Diffusion/blob/main/ddpm_mnist_based/images/FLower102_linearBeta_epoch_520.jpg" alt="FLower102_linearBeta_epoch_520" style="zoom:101%;" /> |
+| 配置      | L1 loss、Cosine Beta         | L2 loss、Cosine Beta                | L1 loss、Linear Beta                    |
+| --------- | ---------------------------- | ----------------------------------- | --------------------------------------- |
+| Cifar10   | ![](cifar10_epoch27.jpg)     | ![](cifar10_L2loss_epoch27.jpg)     | ![](cifar10_linearBeta_epoch27.jpg)     |
+| Flower102 | ![](Flower102_epoch_520.jpg) | ![](Flower102_L2loss_epoch_520.jpg) | ![](FLower102_linearBeta_epoch_520.jpg) |
 
   
 
-## 其他Tricks
+# 采样加速
+
+推理加速主要使用[DDIM](https://arxiv.org/abs/2010.02502)  中的算法
+
+## DDIM公式推理
+
+待补充~
+
+## 加速采样实践
+
+| 配置        | 50步                                                         | 100步                                                        | 200步                                                        | 500步                                                        | 800步                                                        | 1000步                                                       |
+| ----------- | ------------------------------------------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------ |
+| DDPM        | ![](https://github.com/qzq2514/Diffusion/tree/main/ddpm_mnist_based/images/DDIM/20221231153752_StyleGAN_face_size128_DDPM_50_0p0_final.jpg) | ![](https://github.com/qzq2514/Diffusion/tree/main/ddpm_mnist_based/images/DDIM/20221231153902_StyleGAN_face_size128_DDPM_100_0p0_final.jpg) | ![](https://github.com/qzq2514/Diffusion/tree/main/ddpm_mnist_based/images/DDIM/20221231153924_StyleGAN_face_size128_DDPM_200_0p0_final.jpg) | ![](https://github.com/qzq2514/Diffusion/tree/main/ddpm_mnist_based/images/DDIM/20221231154000_StyleGAN_face_size128_DDPM_500_0p0_final.jpg) | ![](https://github.com/qzq2514/Diffusion/tree/main/ddpm_mnist_based/images/DDIM/20221231154126_StyleGAN_face_size128_DDPM_800_0p0_final.jpg) | ![](https://github.com/qzq2514/Diffusion/tree/main/ddpm_mnist_based/images/DDIM/20221231154212_StyleGAN_face_size128_DDPM_1000_0p0_final.jpg) |
+| DDIM(eta=1) | ![](https://github.com/qzq2514/Diffusion/tree/main/ddpm_mnist_based/images/DDIM/20221231154809_StyleGAN_face_size128_DDIM_50_1p0_final.jpg) | ![](https://github.com/qzq2514/Diffusion/tree/main/ddpm_mnist_based/images/DDIM/20221231154843_StyleGAN_face_size128_DDIM_100_1p0_final.jpg) | ![](https://github.com/qzq2514/Diffusion/tree/main/ddpm_mnist_based/images/DDIM/20221231154953_StyleGAN_face_size128_DDIM_200_1p0_final.jpg) | ![](https://github.com/qzq2514/Diffusion/tree/main/ddpm_mnist_based/images/DDIM/20221231155049_StyleGAN_face_size128_DDIM_500_1p0_final.jpg) | ![](https://github.com/qzq2514/Diffusion/tree/main/ddpm_mnist_based/images/DDIM/20221231155129_StyleGAN_face_size128_DDIM_800_1p0_final.jpg) | ![](https://github.com/qzq2514/Diffusion/tree/main/ddpm_mnist_based/images/DDIM/20221231155212_StyleGAN_face_size128_DDIM_1000_1p0_final.jpg) |
+| DDIM(eta=0) | ![](https://github.com/qzq2514/Diffusion/tree/main/ddpm_mnist_based/images/DDIM/20221231154412_StyleGAN_face_size128_DDIM_50_0p0_final.jpg) | ![](https://github.com/qzq2514/Diffusion/tree/main/ddpm_mnist_based/images/DDIM/20221231154734_StyleGAN_face_size128_DDIM_100_0p0_final.jpg) | ![](https://github.com/qzq2514/Diffusion/tree/main/ddpm_mnist_based/images/DDIM/20221231154454_StyleGAN_face_size128_DDIM_200_0p0_final.jpg) | ![](https://github.com/qzq2514/Diffusion/tree/main/ddpm_mnist_based/images/DDIM/20221231154518_StyleGAN_face_size128_DDIM_500_0p0_final.jpg) | ![](https://github.com/qzq2514/Diffusion/tree/main/ddpm_mnist_based/images/DDIM/20221231154641_StyleGAN_face_size128_DDIM_800_0p0_final.jpg) | ![](https://github.com/qzq2514/Diffusion/tree/main/ddpm_mnist_based/images/DDIM/20221231154551_StyleGAN_face_size128_DDIM_1000_0p0_final.jpg) |
+
+上面的DDPM在采样步数小于训练步数(1000)的时候，使用的是[Improved DDPM](http://proceedings.mlr.press/v139/nichol21a/nichol21a.pdf) 中的间隔步长采样。可以看到上面的结果：
+
+- 常规的DDPM采样结果在步数比较小时候基本仍然为纯噪声，虽然在步数逐渐增大(如500和800步)后会逐渐出现生成主体，但是仍然有一层噪声，直到采样步数等于训练时候的去噪步数(1000步)才能生成比较好完全无噪声的图像。
+- 使用DDIM算法时候即便在部署很小(50步)时，也已经具有了比较好的生成效果，生成速度能提升至少20倍。
+- 从当前实验结果看下来，在DDIM采样中eta=0和eta=1好像并无太大的效果差异。
+
+
+
+# 其他Tricks
 
 此外又使用[lucidrains](https://github.com/lucidrains/denoising-diffusion-pytorch) 的代码验证了一下其中比较重要配置(如EMA、P2 loss、Clip_denoised)的必要性，对比效果如下:
 
@@ -68,7 +99,7 @@ loss_type='l1'     beta_schedule='cosine'     objective='pred_noise'   self_cond
 
 
 
-## 参考文献/Code:
+# 参考文献/Code:
 
 [DDPM](https://arxiv.org/pdf/2006.11239.pdf)  
 [Improved DDPM](http://proceedings.mlr.press/v139/nichol21a/nichol21a.pdf)  
