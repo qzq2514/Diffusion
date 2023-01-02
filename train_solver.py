@@ -23,7 +23,7 @@ opt = parser.parse_args()
 
 # 训练数据相关配置
 data_name = opt.data_name
-config = yaml.load(open("./config.yaml", "r"), Loader=yaml.SafeLoader)
+config = yaml.load(open("config.yaml", "r"), Loader=yaml.SafeLoader)
 image_size = config["Train_Data"][data_name]["image_size"]
 img_channel = config["Train_Data"][data_name]["image_channel"]
 batch_size = config["Train_Data"][data_name]["batch_size"]
