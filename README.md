@@ -2,9 +2,10 @@
 
 基于pytorch 实现的Diffusion模型  
 
-# 各数据集参数配置及效果
+# 训练和测试
 
-训练:
+**训练:**  
+运行train_solver.py文件并且通过data_name指定数据集，具体可以见config.yaml文件。
 
 ```
 CUDA_VISIBLE_DEVICES=0 python train_solver.py --data_name "Flower102"
@@ -12,9 +13,23 @@ CUDA_VISIBLE_DEVICES=0 python train_solver.py --data_name "Flower102"
 
 在config.yaml中各个数据集使用默认的Training Setting，每个数据集特有的配置见config.yaml下的Train_Data.
 
-# 生成效果
+**测试:**  
+下载训练好的模型，在run_test.sh指定model_path、image_size/image_channel、sample_num等一些常规参数，此外有一些重要参数如下:  
 
-生成效果如下:
+- test_mode: 选择测试的模式，目前是支持random_gen(随机生成)和interpolate(插值效果)两种方式
+
+- training_timestep_num: 加噪步数(一般是和训练时候采用的步数相同，默认1000)
+
+- sample_info: 采样方式，默认是两种形式:
+
+  - "DDPM_1000_0p0": 常规的DDPM采样，且去噪迭代次数为1000(也可以设定为小于1000的数，此时会默认采用间隔步数采样)，第三个参数"0p0"在这个采样方式下用不到
+  -  "DDIM_50_0p0": 加速的DDIM采样，采样步数为50，eta参数为0p0。
+
+  上述两种形式都以"_"为界限分别指定"采样方式"、"迭代步数"、"eta"，可自行修改参数查看相关效果
+
+其他注意点:在使用test_mode="interpolate"时候，最好使用sample_info="DDPM_1000_0p0"
+
+# 生成效果
 
 | 数据集                                                       | 去噪过程可视化                                               | 最终去噪效果    | 插值                                              |
 | ------------------------------------------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------ |------------------------------------------------------------ |
@@ -26,8 +41,8 @@ CUDA_VISIBLE_DEVICES=0 python train_solver.py --data_name "Flower102"
 
 上述训练数据集和已经训练好的模型放在[这里](https://drive.google.com/drive/folders/1yInbcK5pq9qMhkl9ES3QIZr69LXkeeQK).
 
-- 去噪过程可视化中，如果在采样step内均匀采样时间戳，会发现前面的去噪过程过于缓慢而后面会突然“有效果”，所以这里对于时间戳采用了一个“先粗后细”的采样trick用于可视化。
-- 上述插值方法由[原DDPM](https://arxiv.org/pdf/2006.11239.pdf) 论文中提出，本仓库采用其默认配置: `扩散步数=500，插值系数从0~1均匀采样10次`
+- 去噪过程可视化中，如果在采样step内均匀采样时间戳，会发现前面的去噪过程过于缓慢而后面会突然“有效果”，所以这里对于时间戳采用了一个“先粗后细”的采样trick用于可视化(具体见test_solver.py的test_random_generate函数)。
+- 上述插值方法采用[原DDPM](https://arxiv.org/pdf/2006.11239.pdf)论文中提出，本仓库采用其默认配置: `扩散步数=500，插值系数从0~1均匀采样11次`
 其中第一行和最后一行分别为两个原始的插值图片，中间11行为插值的结果，并且第二行和倒数第二行插值系数分别为0和1，可以看成是对原始两个插值图片的重构。
 实验下来：感觉插值的结果并非是平缓的，而是中间会有一个比较“陡峭”的突变过程.....暂时没找到这种突变的解释~
 
@@ -35,13 +50,7 @@ CUDA_VISIBLE_DEVICES=0 python train_solver.py --data_name "Flower102"
 
 # 效果提升
 
-这里简单实验和讨论了在训练DDPM过程中使用的损失函数(L1或L2损失)，并且实验了[Improved DDPM](http://proceedings.mlr.press/v139/nichol21a/nichol21a.pdf) 中提到的Cosine Beta Schedule带来的效果提升。
-
-## Cosine Beta Schedule
-
-待补充~
-
-## 效果提升实践
+这里简单实验和讨论了在训练DDPM过程中使用的损失函数(L1或L2损失)，并且实验了[Improved DDPM](http://proceedings.mlr.press/v139/nichol21a/nichol21a.pdf) 中提到的Cosine Beta Schedule带来的效果提升:
 
 - 单通道较简单的数据集(如Mnist, Fashion_Mnist等)可以直接使用Linear的Beta采样，与Cosine采样无大区别
 - 3通道相对复杂的数据集(如Cifar10, Flower102, StyleGAN_Face等)的Beta采样最好使用[Improved DDPM](http://proceedings.mlr.press/v139/nichol21a/nichol21a.pdf)中提出的Cosine schedule,不然会导致最终生成的图片偏白。
@@ -59,12 +68,6 @@ CUDA_VISIBLE_DEVICES=0 python train_solver.py --data_name "Flower102"
 # 采样加速
 
 推理加速主要使用[DDIM](https://arxiv.org/abs/2010.02502)  中的算法
-
-## DDIM公式推理
-
-待补充~
-
-## 加速采样实践
 
 | 配置        | 50步                                                         | 100步                                                        | 200步                                                        | 500步                                                        | 800步                                                        | 1000步                                                       |
 | ----------- | ------------------------------------------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------ |

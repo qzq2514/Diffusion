@@ -6,7 +6,7 @@ CUDA_VISIBLE_DEVICES=6 python test_solver.py \
                               --image_channel 3 \
                               --sample_num 4 \
                               --test_mode "random_gen" \
-                              --sample_info "DDPM_50_0p0" #  True_50_0p0  False
+                              --sample_info "DDPM_50_0p0" #  DDPM_1000_0p0  DDIM_50_0p0
 
 # interpolate
 #CUDA_VISIBLE_DEVICES=6 python test_solver.py \
