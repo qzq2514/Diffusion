@@ -1,3 +1,7 @@
+# 理论推导
+具体理论公式的推导见[Georgeqi'Blob](https://qzq2514.github.io/2022/12/20/Diffusion%E5%AD%A6%E4%B9%A02-%E7%90%86%E8%AE%BA%E6%8E%A8%E5%AF%BC/)
+
+
 # Diffusion.pytorch
 
 基于pytorch 实现的Diffusion模型  
